@@ -2,13 +2,38 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hole : MonoBehaviour {
+public class Hole : MonoBehaviour
+{
+	bool fallIn;
+
 	// どのボールを吸い寄せるかをタグで指定
 	public string activeTag;
 
-	void OnTriggerStay (Collider other) {
+
+	// ボールが入っているかを返す
+	public bool IsFallIn ()
+	{
+		return fallIn;
+	}
+
+	void OnTriggerEnter (Collider other)
+	{
+		if (other.gameObject.tag == activeTag) {
+			fallIn = true;
+		}
+	}
+
+	void OnTriggerExit (Collider other)
+	{
+		if (other.gameObject.tag == activeTag) {
+			fallIn = false;
+		}
+	}
+
+	void OnTriggerStay (Collider other)
+	{
 		// コライダに触れているオブジェクトのRigidbodyコンポーネントを取得
-		Rigidbody r = other.gameObject.GetComponent<Rigidbody>();
+		Rigidbody r = other.gameObject.GetComponent<Rigidbody> ();
 
 		// ボールがどの方向にあるかを計算
 		Vector3 direction = transform.position - other.gameObject.transform.position;
